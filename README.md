@@ -1,6 +1,6 @@
 # Backend Butler
 
-A Home Assistant app: a chat with a Claude agent that looks at your home, controls your devices, and writes automations and scripts for you, asking before it changes anything that matters.
+A Home Assistant app: a chat with an AI agent that looks at your home, controls your devices, and writes automations and scripts for you, asking before it changes anything that matters.
 
 [![Add repository to my Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fbackend-butler%2Fha-addon)
 

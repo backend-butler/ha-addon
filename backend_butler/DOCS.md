@@ -1,6 +1,6 @@
 # Backend Butler
 
-Backend Butler is a chat with a Claude agent that can look at your Home Assistant, control your devices, and write automations and scripts for you. Open it from **Backend Butler** in the sidebar.
+Backend Butler is a chat with an AI agent that can look at your Home Assistant, control your devices, and write automations and scripts for you. Open it from **Backend Butler** in the sidebar.
 
 ## Setup
 

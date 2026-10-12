@@ -1,7 +1,7 @@
 name: Backend Butler
 version: "0.6.1"
 slug: backend_butler
-description: A Claude agent that controls Home Assistant and edits automations with your approval.
+description: An AI agent that controls Home Assistant and edits automations with your approval.
 url: https://github.com/backend-butler/ha-addon
 arch:
   - amd64
