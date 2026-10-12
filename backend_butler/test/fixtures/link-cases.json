@@ -1,0 +1,139 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "note": "focus the message box",
+      "search": "?butler=field",
+      "expect": {
+        "kind": "field"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "one-tap camera prompt",
+      "search": "?butler=camera",
+      "expect": {
+        "kind": "camera"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "one-tap photo library prompt",
+      "search": "?butler=photo",
+      "expect": {
+        "kind": "photo"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "one-tap dictation prompt",
+      "search": "?butler=mic",
+      "expect": {
+        "kind": "mic"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "one-tap voice prompt",
+      "search": "?butler=voice",
+      "expect": {
+        "kind": "voice"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "fresh chat",
+      "search": "?butler=new",
+      "expect": {
+        "kind": "new"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "text is ignored for kinds that carry no words",
+      "search": "?butler=new&text=ignored",
+      "expect": {
+        "kind": "new"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "words for a fresh chat, waiting for Send",
+      "search": "?butler=say&text=turn%20off%20the%20lamp",
+      "expect": {
+        "kind": "say",
+        "textLength": 17,
+        "text": "turn off the lamp"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "words are trimmed",
+      "search": "?butler=draft&text=%20%20what%27s%20on%20%20",
+      "expect": {
+        "kind": "draft",
+        "textLength": 9,
+        "text": "what's on"
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "say without words is ignored",
+      "search": "?butler=say",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "blank words are ignored",
+      "search": "?butler=draft&text=%20%20",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "words are cut to 4000 characters",
+      "search": null,
+      "searchTemplate": {
+        "prefix": "?butler=say&text=",
+        "repeat": "a",
+        "count": 4100
+      },
+      "expect": {
+        "kind": "say",
+        "textLength": 4000
+      },
+      "strippedSearch": ""
+    },
+    {
+      "note": "kinds are case-sensitive",
+      "search": "?butler=CAMERA",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "unknown kinds are ignored",
+      "search": "?butler=delete_everything",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "words without a kind are ignored",
+      "search": "?text=hello",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "no query",
+      "search": "",
+      "expect": null,
+      "strippedSearch": ""
+    },
+    {
+      "note": "other parameters are kept when stripping",
+      "search": "?edit=1&butler=field",
+      "expect": {
+        "kind": "field"
+      },
+      "strippedSearch": "?edit=1"
+    }
+  ]
+}
