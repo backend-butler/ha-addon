@@ -7,8 +7,21 @@
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-    "types": ["node"],
-    "lib": ["ES2023", "DOM", "DOM.Iterable"]
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "ES2023",
+      "DOM",
+      "DOM.Iterable"
+    ]
   },
-  "include": ["server", "web", "shared", "card", "test", "vite.config.ts", "vitest.config.ts"]
+  "include": [
+    "server",
+    "web",
+    "shared",
+    "test",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ]
 }
