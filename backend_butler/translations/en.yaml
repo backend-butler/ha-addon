@@ -1,0 +1,10 @@
+configuration:
+  anthropic_api_key:
+    name: Anthropic API key
+    description: Your key from console.anthropic.com. Required. Messages, photos and entity names are sent to Anthropic with it.
+  model:
+    name: Model
+    description: The Claude model to use. The default is claude-sonnet-5-5.
+  stt_pipeline:
+    name: Voice pipeline
+    description: Which Assist pipeline turns your voice into text. "auto" picks your preferred pipeline if it uses a cloud speech-to-text engine, otherwise the first pipeline using OpenAI, Google AI or ElevenLabs. Or enter a pipeline id. Audio is sent to that pipeline's engine.

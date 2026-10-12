@@ -1,0 +1,24 @@
+/* `/` skill menu (Task 21). */
+.composer { position: relative; }
+.slash-menu {
+  position: absolute; left: 12px; right: 12px; bottom: 100%;
+  max-width: 720px; margin: 0 auto 6px; padding: 4px;
+  max-height: calc(5 * 48px + 8px); overflow-y: auto;
+  list-style: none;
+  /* HA themes often make cards translucent (visionOS): paint the card over the solid page colour. */
+  background: linear-gradient(var(--surface), var(--surface)), var(--bg);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+.slash-opt {
+  display: flex; flex-direction: column; justify-content: center; gap: 2px;
+  min-height: 44px; padding: 6px 12px; border-radius: var(--r-md);
+  cursor: pointer; min-width: 0;
+}
+.slash-opt[aria-selected="true"] { background: var(--accent-tint); }
+.slash-name { color: var(--text); font-weight: 600; }
+.slash-desc { color: var(--muted); font-size: 0.85em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (prefers-reduced-motion: no-preference) {
+  .slash-opt { transition: background-color 0.12s; }
+}

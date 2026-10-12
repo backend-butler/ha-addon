@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Backend Butler</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Classic script, runs even if the module bundle cannot: show load/runtime errors instead of a blank screen. -->
+    <script>
+      (function () {
+        function show(msg) {
+          var root = document.getElementById("root");
+          if (!root || root.querySelector("[data-app]")) return;
+          root.innerHTML = "";
+          var box = document.createElement("pre");
+          box.setAttribute("role", "alert");
+          box.style.cssText = "margin:16px;padding:12px;border:1px solid #ff6b6b;border-radius:8px;color:#ff6b6b;white-space:pre-wrap;font:13px/1.4 ui-monospace,monospace";
+          box.textContent = "Backend Butler could not start.\n\n" + msg + "\n\n" + navigator.userAgent;
+          root.appendChild(box);
+        }
+        window.addEventListener("error", function (e) { show(e.message + (e.filename ? "\n" + e.filename + ":" + e.lineno : "")); });
+        window.addEventListener("unhandledrejection", function (e) { show("Unhandled: " + (e.reason && (e.reason.stack || e.reason.message) || e.reason)); });
+        setTimeout(function () { show("The app script did not load or run within 8 seconds."); }, 8000);
+      })();
+    </script>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

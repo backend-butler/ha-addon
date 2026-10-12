@@ -1,0 +1,26 @@
+name: Backend Butler
+version: "0.6.0"
+slug: backend_butler
+description: A Claude agent that controls Home Assistant and edits automations with your approval.
+url: https://github.com/backend-butler/ha-addon
+arch:
+  - amd64
+  - aarch64
+init: false
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:robot-happy-outline
+panel_title: Backend Butler
+homeassistant_api: true
+# The app's own folder in /addon_configs, mounted at /config: skills and household.md live here.
+map:
+  - type: addon_config
+    read_only: false
+options:
+  anthropic_api_key: ""
+  model: claude-sonnet-5-5
+  stt_pipeline: auto
+schema:
+  anthropic_api_key: password
+  model: str
+  stt_pipeline: str

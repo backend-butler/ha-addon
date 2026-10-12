@@ -1,0 +1,307 @@
+/* Design system: "The Night Ops Room", blended with Home Assistant's theme.
+   These are the Night Ops fallback values; inside HA, haTheme.ts overrides them on <html> with HA's live theme.
+   One accent, borders not shadows, monospace only for literal content. */
+:root {
+  --bg: #0a0a0b;
+  --surface: #121214;
+  --border: #242427;
+  --text: #f2f2f3;
+  --muted: #8a8a90;
+  --accent: #f0973d;
+  --accent-fg: #1a1006;
+  --accent-tint: color-mix(in srgb, var(--accent) 10%, transparent);
+  --error: #ff6b6b;
+  --ok: #5fd08a;
+
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  /* Sheet and approval cards: HA's card radius when blended. */
+  --r-card: 12px;
+  /* Backdrop filter for the sheet and approval cards only, never the transcript. */
+  --glass: none;
+
+  /* Standalone (dev/direct): respect the notch. Inside HA's app, HA already does. */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  color-scheme: dark;
+}
+.in-ha {
+  --safe-top: 0px;
+  --safe-bottom: 0px;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 0.95rem/1.45 var(--font);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  caret-color: var(--accent);
+  scrollbar-color: var(--border) transparent;
+}
+::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); color: var(--text); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Buttons */
+button {
+  font: inherit;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  min-height: 44px;
+  -webkit-tap-highlight-color: transparent;
+}
+button:disabled { opacity: 0.55; cursor: default; }
+.primary { background: var(--accent); color: var(--accent-fg); border: 0; font-weight: 600; padding: 0 16px; }
+.danger { background: var(--error); color: #1f0606; border: 0; font-weight: 600; padding: 0 14px; }
+.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0 12px; }
+.ghost:hover:not(:disabled) { color: var(--text); }
+.icon-button { background: transparent; color: var(--muted); border: 1px solid var(--border); width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.icon-button:hover { color: var(--text); }
+.link-button { background: none; border: 0; color: var(--accent); padding: 0 4px; min-height: 44px; font-weight: 600; }
+
+/* Shell */
+.app { display: flex; height: 100%; }
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+/* Desktop only: HA shows no header above an ingress panel there. On a phone HA's header is the only one. */
+.topbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 16px;
+  padding-top: max(8px, var(--safe-top));
+  border-bottom: 1px solid var(--border);
+}
+.topbar h1 { margin: 0; font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.topbar .icon-button { border-color: transparent; }
+
+/* Chat list: desktop sidebar and phone sheet share the rows */
+.sidebar {
+  width: 260px; flex: none;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  padding: 12px 8px;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.chat-new {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; min-height: 48px; padding: 0 12px;
+  background: transparent; color: var(--text); border: 1px solid var(--border);
+  font-weight: 600; text-align: left;
+}
+.chat-new svg { color: var(--accent); }
+.chat-new:hover { background: var(--surface); }
+.list-note { color: var(--muted); font-size: 0.875rem; margin: 8px 12px; }
+.chat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.chat-row { position: relative; border-radius: var(--r-md); }
+.chat-row.swipeable { touch-action: pan-y; overflow: hidden; }
+/* The highlight belongs to the whole row, so it wraps the Archive and Delete buttons too. */
+.chat-row-slide { display: flex; align-items: center; background: var(--bg); border: 1px solid transparent; border-radius: var(--r-md); position: relative; }
+.chat-row-slide:hover, .chat-row.revealed .chat-row-slide { background: var(--surface); }
+.chat-row-slide.current { background: var(--surface); border-color: var(--border); }
+.chat-row-under {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 18px;
+  background: var(--surface); color: var(--muted); font-weight: 600; border-radius: var(--r-md);
+}
+.chat-row-main {
+  flex: 1; min-width: 0; min-height: 48px;
+  display: flex; flex-direction: column; justify-content: center; gap: 1px;
+  text-align: left; background: transparent; color: var(--text);
+  border: 0; padding: 6px 10px;
+}
+.chat-row-main[aria-current="page"] .chat-row-title { color: var(--accent); }
+.chat-row-title { font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.chat-row-time { font-size: 0.75rem; color: var(--muted); }
+.chat-row-action { border-color: transparent; opacity: 0; }
+.chat-row-delete:hover { color: var(--error); }
+/* Desktop: actions appear on hover or keyboard focus. Touch screens: in the sheet's Edit mode, or after a swipe. */
+.chat-row:hover .chat-row-action, .chat-row:focus-within .chat-row-action, .chat-list.editing .chat-row-action, .chat-row.revealed .chat-row-action { opacity: 1; }
+.swipeable:not(:focus-within):not(.revealed) .chat-row-action { display: none; }
+.chat-list.editing .chat-row-action { display: inline-flex; }
+/* Restore is always one tap away inside the open Archived section. */
+.chat-row-unarchive { flex: none; margin-left: 4px; font-size: 0.85rem; }
+.chat-row > .chat-row-error { display: block; padding: 2px 10px 6px; }
+.archived { margin-top: 8px; border-top: 1px solid var(--border); padding-top: 4px; display: flex; flex-direction: column; gap: 2px; }
+.archived-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; min-height: 44px; padding: 0 10px;
+  background: transparent; border: 0; color: var(--muted); font-size: 0.85rem; font-weight: 600; text-align: left;
+}
+.archived-toggle:hover { color: var(--text); }
+.archived-toggle::after { content: ""; width: 7px; height: 7px; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); margin-right: 6px; transition: transform 0.2s; }
+.archived-toggle[aria-expanded="true"]::after { transform: rotate(-135deg); }
+.archived .chat-row-title { color: var(--muted); }
+.chat-row-confirm {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 8px 10px; border: 1px solid var(--error);
+}
+.chat-row-question { flex: 1 1 100%; font-size: 0.9rem; display: flex; min-width: 0; }
+.chat-row-question .chat-row-title { flex: 0 1 auto; }
+.chat-row-error { flex: 1 1 100%; color: var(--error); font-size: 0.85rem; }
+.chat-row-actions { display: flex; gap: 8px; margin-left: auto; }
+
+.switch-confirm {
+  border: 1px solid var(--accent); background: var(--accent-tint); border-radius: var(--r-lg);
+  padding: 10px 12px; margin: 0 0 8px;
+}
+.switch-confirm p { margin: 0 0 8px; font-size: 0.9rem; }
+.switch-confirm-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+
+/* Phone: bottom sheet */
+.sheet-layer { position: fixed; inset: 0; z-index: 30; }
+.scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.5); animation: fade-in 0.2s ease-out; }
+.sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  height: 75vh; height: 75dvh;
+  display: flex; flex-direction: column;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  -webkit-backdrop-filter: var(--glass);
+  backdrop-filter: var(--glass);
+  border-top: 1px solid var(--border);
+  border-radius: var(--r-card) var(--r-card) 0 0;
+  padding-bottom: var(--safe-bottom);
+  animation: sheet-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sheet.dragging { transition: none; }
+.sheet-head {
+  position: relative; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 12px 4px 16px; touch-action: none; cursor: grab;
+}
+.sheet-handle { position: absolute; top: 6px; left: 50%; width: 36px; height: 5px; margin-left: -18px; border-radius: 3px; background: var(--border); }
+.sheet-head h2 { margin: 0; font-size: 1rem; font-weight: 600; }
+.sheet-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 4px 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+.sheet > .switch-confirm { margin: 8px 12px; }
+@keyframes sheet-in { from { transform: translateY(100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+
+/* Chat */
+.chat { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+.messages { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+.msg { max-width: 720px; width: 100%; margin: 0 auto; min-width: 0; }
+.msg-user p {
+  background: var(--accent); color: var(--accent-fg);
+  padding: 8px 12px; border-radius: var(--r-lg);
+  margin: 0 0 0 auto; width: fit-content; max-width: 85%;
+  white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.msg-assistant { display: flex; flex-direction: column; gap: 6px; }
+.msg-assistant > .text {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 10px 14px; overflow-wrap: anywhere; min-width: 0;
+}
+.msg-assistant > .text > :first-child { margin-top: 0; }
+.msg-assistant > .text > :last-child { margin-bottom: 0; }
+.msg-assistant a { color: var(--accent); text-underline-offset: 2px; }
+.msg-assistant pre, .msg-assistant code { font-family: var(--mono); font-size: 0.85rem; }
+.msg-assistant pre { overflow-x: auto; }
+.msg-assistant table { display: block; overflow-x: auto; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.msg-assistant th, .msg-assistant td { border: 1px solid var(--border); padding: 4px 8px; }
+.msg-error { color: var(--error); border: 1px solid var(--error); border-radius: var(--r-lg); padding: 8px 12px; overflow-wrap: anywhere; }
+
+/* Working: the logo's three studs, pulsing in turn */
+.working { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.85rem; min-height: 24px; }
+.studs { display: inline-flex; flex-direction: column; gap: 3px; }
+.studs i { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); opacity: 0.3; animation: stud 1.2s ease-in-out infinite; }
+.studs i:nth-child(2) { animation-delay: 0.2s; }
+.studs i:nth-child(3) { animation-delay: 0.4s; }
+@keyframes stud { 30% { opacity: 1; } 60%, 100% { opacity: 0.3; } }
+
+/* Fresh chat */
+.empty { margin: auto; max-width: 34ch; text-align: center; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.empty .logo { color: var(--text); }
+.empty p { margin: 10px 0 14px; font-size: 0.9rem; }
+.starters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.starters { flex-direction: column; align-items: center; }
+.starter {
+  position: relative;
+  background: transparent; color: var(--text);
+  border: 1px solid var(--border); border-radius: 999px;
+  min-height: 36px; padding: 0 14px; font-size: 0.875rem;
+}
+/* 36px to look like the mockup, 44px to hit */
+.starter::before { content: ""; position: absolute; inset: -4px 0; }
+.starter:hover { border-color: var(--accent); }
+
+/* Tool-call lines: quieter than a message */
+.tool {
+  border: 1px dashed var(--border); border-radius: var(--r-md);
+  color: var(--muted); font: 0.8rem/1.4 var(--mono);
+  padding: 6px 10px;
+}
+.tool summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
+.tool summary::-webkit-details-marker { display: none; }
+.tool-status { margin-left: auto; }
+.tool-failed .tool-status { color: var(--error); }
+.tool pre { margin: 6px 0 0; white-space: pre-wrap; word-break: break-word; max-height: 40vh; overflow: auto; }
+.tool-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
+.tool-running .tool-dot { background: var(--accent); }
+.tool-ok .tool-dot { background: var(--ok); }
+.tool-failed .tool-dot { background: var(--error); }
+
+/* Approval card: the one thing awaiting a decision */
+.approval {
+  max-width: 480px;
+  background: var(--accent-tint); border: 1px solid var(--accent); border-radius: var(--r-card);
+  -webkit-backdrop-filter: var(--glass);
+  backdrop-filter: var(--glass);
+  padding: 12px 14px;
+}
+.approval-allowed, .approval-denied { background: transparent; border-color: var(--border); }
+.approval-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.approval-badge { font-size: 0.8rem; color: var(--muted); flex: none; }
+.approval-denied .approval-badge { color: var(--error); }
+.approval-summary { margin: 4px 0 8px; color: var(--muted); font-size: 0.85rem; }
+.approval-preview {
+  margin: 0;
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md);
+  padding: 8px 10px; font: 0.8rem/1.45 var(--mono);
+  overflow: auto; max-height: 45vh; white-space: pre;
+}
+.diff-add { color: var(--ok); }
+.diff-del { color: var(--error); }
+.approval-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.approval-actions button { min-width: 104px; }
+
+/* Composer */
+.composer {
+  padding: 10px 16px;
+  padding-bottom: max(10px, var(--safe-bottom));
+  border-top: 1px solid var(--border);
+}
+.composer-inner { display: flex; gap: 8px; width: 100%; max-width: 720px; margin: 0 auto; align-items: flex-end; }
+.composer textarea {
+  flex: 1; min-width: 0; resize: none;
+  background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  padding: 11px 12px; min-height: 44px;
+  /* 16px stops iOS Safari zooming on focus */
+  font: 1rem/1.4 var(--font);
+  max-height: 40vh;
+}
+.composer textarea::placeholder { color: var(--muted); }
+.composer textarea:focus { outline: none; border-color: var(--accent); }
+.phonebar { display: flex; align-items: center; gap: 8px; padding: 6px 12px 0 16px; }
+.phonebar-title { flex: 1; min-width: 0; margin: 0; color: var(--muted); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.phonebar-button { position: relative; background: var(--surface); color: var(--text); border-radius: var(--r-lg); }
+.dot-badge { position: absolute; top: 7px; right: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--bg); }
+
+@media (max-width: 767px) {
+  .messages { padding: 12px; }
+  .composer { padding-left: 12px; padding-right: 12px; }
+  .msg-user p { max-width: 90%; }
+  .approval { max-width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studs i { animation: none; opacity: 0.7; }
+  .sheet, .scrim { animation: none; transition: none; }
+  .archived-toggle::after { transition: none; }
+}
