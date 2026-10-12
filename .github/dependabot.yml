@@ -3,6 +3,10 @@ updates:
   - package-ecosystem: npm
     directory: /backend_butler
     schedule: { interval: weekly }
+    ignore:
+      # Types follow the Node version the app runs on (22), not the newest Node.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       dev: { dependency-type: development }
   - package-ecosystem: docker

@@ -2,6 +2,12 @@
 
 All notable changes to this app are listed here, newest first.
 
+## 0.6.1
+
+### Changed
+- Claude Agent SDK 0.3.289 → 0.3.296 (fixes only; chats and approval cards checked on a live install).
+- Removed `ingress_port` from the app config: it was the default value (flagged by the Home Assistant app linter).
+
 ## 0.6.0
 
 ### Security
