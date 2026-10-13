@@ -1,12 +1,14 @@
 import { randomUUID } from "node:crypto";
 import type { CanUseTool, PermissionResult } from "@anthropic-ai/claude-agent-sdk";
 import type { Emit } from "./sse.js";
+import type { OutlineSection } from "../shared/transcript.js";
 import type { DiffLine } from "./yaml.js";
 
 export interface ApprovalRequest {
   title: string;
   summary: string;
   preview: { kind: "yaml"; text: string } | { kind: "diff"; lines: DiffLine[] };
+  outline?: OutlineSection[];
 }
 
 /** A tool that needs approval. prepare() validates and builds the preview, or returns an error for the agent. */

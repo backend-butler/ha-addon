@@ -2,11 +2,19 @@
 
 export type DiffLine = { op: " " | "+" | "-"; text: string };
 
+/** One row of an approval's plain-language reading: "When" the triggers, "If" the conditions, "Then" the steps. */
+export interface OutlineSection {
+  label: "When" | "If" | "Then";
+  items: string[];
+}
+
 export interface Approval {
   id: string;
   title: string;
   summary: string;
   preview: { kind: "yaml"; text: string } | { kind: "diff"; lines: DiffLine[] };
+  /** Automations and scripts: the config read as When / If / Then. Shown above the preview, never instead of it. */
+  outline?: OutlineSection[];
   /** undefined = waiting for the user */
   allowed?: boolean;
 }

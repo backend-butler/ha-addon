@@ -16,7 +16,7 @@ export function splitArchived(chats: ChatSummary[]): { active: ChatSummary[]; ar
 }
 
 /** Fixed starter set. A starter ending in "…" fills the composer instead of sending. */
-export const STARTERS = ["Which lights are on?", "Create an automation for…", "Turn off all the lights", "What's on in the living room?"];
+export const STARTERS = ["Which lights are on?", "Turn off all the lights", "Create an automation for…", "What can you do?"];
 
 export function relativeTime(iso: string, now: number): string {
   const then = Date.parse(iso);
