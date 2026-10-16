@@ -318,9 +318,6 @@ kbd { font: 600 0.8em/1 var(--mono); padding: 2px 5px; border: 1px solid var(--b
 .outline dd { margin: 0; }
 .outline ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
 .outline li { font-size: 0.9rem; overflow-wrap: anywhere; }
-.approval-code > summary { cursor: pointer; width: fit-content; font-size: 0.85rem; color: var(--muted); padding: 6px 0; }
-.approval-code > summary:hover, .approval-code[open] > summary { color: var(--text); }
-.approval-code[open] > summary { margin-bottom: 4px; }
 .approval-preview {
   margin: 0;
   background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md);

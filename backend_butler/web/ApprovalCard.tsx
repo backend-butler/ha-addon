@@ -73,15 +73,9 @@ export function ApprovalCard({ approval }: { approval: Approval }) {
           ))}
         </dl>
       )}
-      {/* With a plain reading above, a new config's YAML is one tap away; a diff always shows, it is the change itself. */}
-      {outline.length > 0 && p.kind === "yaml" ? (
-        <details className="approval-code">
-          <summary>Show YAML</summary>
-          {code}
-        </details>
-      ) : (
-        code
-      )}
+      {/* The YAML always shows: the outline reads only the top level, so a nested step (an unlock inside an if, say)
+          appears in the code alone. What is approved is the code, not the outline. */}
+      {code}
       {waiting && (
         <>
           <div className="approval-actions">

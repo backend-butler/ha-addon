@@ -2,6 +2,19 @@
 
 All notable changes to this app are listed here, newest first.
 
+## 0.6.2
+
+### Added
+- Approval cards for automations and scripts open with a plain-language reading (When / If / Then) above the YAML. The YAML still shows in full: it is what you approve.
+- A Stop button (or Esc) ends a reply in progress. A change waiting for approval is declined.
+- Errors say what went wrong and what to do, with Try again and Edit message.
+- What Butler did shows as short rows ("Turned on Lantern", "Saved automation Evening lights", with a link to edit it in Home Assistant), with the raw calls one tap away.
+- An unsent message is kept when you switch chats or reload.
+
+### Changed
+- Clearer start screen: what acts right away and what waits for your OK, and a hint for `/` skills.
+- Better screen-reader support: one announcement when a change needs approval and one when a reply is done.
+
 ## 0.6.1
 
 ### Changed

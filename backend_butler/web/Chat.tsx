@@ -259,7 +259,7 @@ export function Chat({ chatId, phone, onCreated, onTurnSaved, onPendingChange, i
             <Logo size={44} />
             <h2>Ask about your home, or tell Butler what to change.</h2>
             <p className="empty-trust">
-              Lights, switches, fans, climate, media and vacuums act right away. Automations, scripts and everything else
+              Lights, switches, fans, climate, humidifiers, water heaters, media and vacuums act right away. Automations, scripts and everything else
               wait for your OK.
             </p>
             <div className="starters">

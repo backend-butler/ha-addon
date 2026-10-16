@@ -1,5 +1,5 @@
 name: Backend Butler
-version: "0.6.1"
+version: "0.6.2"
 slug: backend_butler
 description: An AI agent that controls Home Assistant and edits automations with your approval.
 url: https://github.com/backend-butler/ha-addon
