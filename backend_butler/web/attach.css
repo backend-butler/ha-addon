@@ -56,8 +56,10 @@
   max-width: 720px; margin: 0 auto 6px; padding: 10px 12px;
   background: linear-gradient(var(--surface), var(--surface)), var(--bg);
   border: 1px solid var(--border); border-radius: var(--r-lg);
-  color: var(--text); font-size: 0.9rem; z-index: 10; cursor: pointer;
+  color: var(--text); font-size: 0.9rem; z-index: 10;
+  display: flex; align-items: center; gap: 8px;
 }
+.composer-note p { margin: 0; flex: 1; }
 
 /* One-tap prompt from the quick card (camera/photo/mic/voice): same surface as .composer-note, but a big target. */
 .intent-prompt {

@@ -12,6 +12,11 @@
   --accent-tint: color-mix(in srgb, var(--accent) 10%, transparent);
   --error: #ff6b6b;
   --ok: #5fd08a;
+  /* Derived, so they follow HA's theme too. Control outlines need 3:1 against the page (WCAG 1.4.11); --border is
+     for dividers, which only separate. The user's bubble is a quiet neutral: the accent is kept for decisions. */
+  --border-strong: color-mix(in srgb, var(--muted) 72%, var(--bg));
+  --bubble: color-mix(in srgb, var(--text) 9%, var(--bg));
+  --hover: color-mix(in srgb, var(--text) 6%, transparent);
 
   --r-sm: 6px;
   --r-md: 8px;
@@ -61,9 +66,9 @@ button {
 button:disabled { opacity: 0.55; cursor: default; }
 .primary { background: var(--accent); color: var(--accent-fg); border: 0; font-weight: 600; padding: 0 16px; }
 .danger { background: var(--error); color: #1f0606; border: 0; font-weight: 600; padding: 0 14px; }
-.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 0 12px; }
-.ghost:hover:not(:disabled) { color: var(--text); }
-.icon-button { background: transparent; color: var(--muted); border: 1px solid var(--border); width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); padding: 0 12px; }
+.ghost:hover:not(:disabled) { background: var(--hover); }
+.icon-button { background: transparent; color: var(--muted); border: 1px solid var(--border-strong); width: 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .icon-button:hover { color: var(--text); }
 .link-button { background: none; border: 0; color: var(--accent); padding: 0 4px; min-height: 44px; font-weight: 600; }
 
@@ -92,11 +97,10 @@ button:disabled { opacity: 0.55; cursor: default; }
 .chat-new {
   display: flex; align-items: center; gap: 10px;
   width: 100%; min-height: 48px; padding: 0 12px;
-  background: transparent; color: var(--text); border: 1px solid var(--border);
+  background: transparent; color: var(--text); border: 1px solid var(--border-strong);
   font-weight: 600; text-align: left;
 }
-.chat-new svg { color: var(--accent); }
-.chat-new:hover { background: var(--surface); }
+.chat-new:hover { background: var(--hover); }
 .list-note { color: var(--muted); font-size: 0.875rem; margin: 8px 12px; }
 .chat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
 .chat-row { position: relative; border-radius: var(--r-md); }
@@ -116,7 +120,7 @@ button:disabled { opacity: 0.55; cursor: default; }
   text-align: left; background: transparent; color: var(--text);
   border: 0; padding: 6px 10px;
 }
-.chat-row-main[aria-current="page"] .chat-row-title { color: var(--accent); }
+.chat-row-main[aria-current="page"] .chat-row-title { font-weight: 600; }
 .chat-row-title { font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
 .chat-row-time { font-size: 0.75rem; color: var(--muted); }
 .chat-row-action { border-color: transparent; opacity: 0; }
@@ -187,24 +191,34 @@ button:disabled { opacity: 0.55; cursor: default; }
 .messages { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
 .msg { max-width: 720px; width: 100%; margin: 0 auto; min-width: 0; }
 .msg-user p {
-  background: var(--accent); color: var(--accent-fg);
+  background: var(--bubble); color: var(--text);
   padding: 8px 12px; border-radius: var(--r-lg);
   margin: 0 0 0 auto; width: fit-content; max-width: 85%;
   white-space: pre-wrap; overflow-wrap: anywhere;
 }
-.msg-assistant { display: flex; flex-direction: column; gap: 6px; }
-.msg-assistant > .text {
-  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
-  padding: 10px 14px; overflow-wrap: anywhere; min-width: 0;
-}
+.msg-assistant { display: flex; flex-direction: column; gap: 8px; }
+/* Butler's words sit on the page, not in a box: the boxes are kept for what it did and what it asks. */
+.msg-assistant > .text { overflow-wrap: anywhere; min-width: 0; max-width: 68ch; }
 .msg-assistant > .text > :first-child { margin-top: 0; }
 .msg-assistant > .text > :last-child { margin-bottom: 0; }
-.msg-assistant a { color: var(--accent); text-underline-offset: 2px; }
+.msg-assistant a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; }
 .msg-assistant pre, .msg-assistant code { font-family: var(--mono); font-size: 0.85rem; }
 .msg-assistant pre { overflow-x: auto; }
 .msg-assistant table { display: block; overflow-x: auto; border-collapse: collapse; font-variant-numeric: tabular-nums; }
 .msg-assistant th, .msg-assistant td { border: 1px solid var(--border); padding: 4px 8px; }
-.msg-error { color: var(--error); border: 1px solid var(--error); border-radius: var(--r-lg); padding: 8px 12px; overflow-wrap: anywhere; }
+.msg-assistant h1, .msg-assistant h2, .msg-assistant h3 { font-size: 1rem; font-weight: 600; margin: 1.1em 0 0.4em; }
+.msg-assistant ul, .msg-assistant ol { padding-left: 1.3em; }
+.msg-error {
+  border: 1px solid color-mix(in srgb, var(--error) 55%, transparent);
+  background: color-mix(in srgb, var(--error) 8%, transparent);
+  border-radius: var(--r-lg); padding: 10px 12px; overflow-wrap: anywhere;
+}
+.msg-error > p { margin: 0; }
+.msg-error-detail { margin-top: 6px; color: var(--muted); font-size: 0.8rem; }
+.msg-error-detail summary { cursor: pointer; width: fit-content; }
+.msg-error-detail pre { margin: 4px 0 0; white-space: pre-wrap; word-break: break-word; font: 0.78rem/1.4 var(--mono); }
+.msg-error-actions { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; margin-top: 10px; }
+.msg-note { margin: 0; color: var(--muted); font-size: 0.85rem; }
 
 /* Working: the logo's three studs, pulsing in turn */
 .working { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.85rem; min-height: 24px; }
@@ -215,40 +229,76 @@ button:disabled { opacity: 0.55; cursor: default; }
 @keyframes stud { 30% { opacity: 1; } 60%, 100% { opacity: 0.3; } }
 
 /* Fresh chat */
-.empty { margin: auto; max-width: 34ch; text-align: center; color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.empty .logo { color: var(--text); }
-.empty p { margin: 10px 0 14px; font-size: 0.9rem; }
-.starters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.starters { flex-direction: column; align-items: center; }
+.empty { margin: auto; max-width: 38ch; text-align: center; color: var(--muted); display: flex; flex-direction: column; align-items: center; }
+.empty .logo { color: var(--text); margin-bottom: 14px; }
+.empty h2 { margin: 0; color: var(--text); font-size: 1.4rem; font-weight: 600; line-height: 1.3; text-wrap: balance; }
+.empty-trust { margin: 8px 0 18px; font-size: 0.875rem; text-wrap: pretty; }
+.starters { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .starter {
   position: relative;
   background: transparent; color: var(--text);
-  border: 1px solid var(--border); border-radius: 999px;
+  border: 1px solid var(--border-strong); border-radius: 999px;
   min-height: 36px; padding: 0 14px; font-size: 0.875rem;
 }
 /* 36px to look like the mockup, 44px to hit */
 .starter::before { content: ""; position: absolute; inset: -4px 0; }
-.starter:hover { border-color: var(--accent); }
+.starter:hover { background: var(--hover); }
+.empty-hint { margin: 18px 0 0; font-size: 0.8rem; }
+kbd { font: 600 0.8em/1 var(--mono); padding: 2px 5px; border: 1px solid var(--border-strong); border-radius: 4px; color: var(--text); }
 
-/* Tool-call lines: quieter than a message */
-.tool {
-  border: 1px dashed var(--border); border-radius: var(--r-md);
-  color: var(--muted); font: 0.8rem/1.4 var(--mono);
-  padding: 6px 10px;
+/* What Butler did. Lookups are one quiet line; a change to the home is a row with its devices and their new state. */
+.act { font-size: 0.875rem; min-width: 0; }
+.act summary { cursor: pointer; list-style: none; }
+.act summary::-webkit-details-marker { display: none; }
+.act-icon { flex: none; display: inline-flex; color: var(--muted); }
+.act-lookups > summary { display: flex; align-items: center; gap: 8px; min-height: 32px; color: var(--muted); }
+.act-lookups > summary:hover .act-more, .act-lookups[open] .act-more { color: var(--text); }
+.act-label { min-width: 0; }
+.act-more { margin-left: auto; font-size: 0.8rem; color: var(--muted); flex: none; }
+.act-flag { color: var(--error); font-size: 0.8rem; flex: none; }
+.act-outcome {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 10px 12px; max-width: 520px;
 }
-.tool summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; }
-.tool summary::-webkit-details-marker { display: none; }
-.tool-status { margin-left: auto; }
-.tool-failed .tool-status { color: var(--error); }
-.tool pre { margin: 6px 0 0; white-space: pre-wrap; word-break: break-word; max-height: 40vh; overflow: auto; }
-.tool-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); flex: none; }
-.tool-running .tool-dot { background: var(--accent); }
-.tool-ok .tool-dot { background: var(--ok); }
-.tool-failed .tool-dot { background: var(--error); }
+.act-main { display: flex; align-items: flex-start; gap: 10px; }
+.act-outcome .act-icon {
+  width: 30px; height: 30px; border-radius: 50%; align-items: center; justify-content: center; margin-top: -4px;
+  background: var(--bubble); color: var(--text);
+}
+.act-outcome.act-ok .act-icon { background: color-mix(in srgb, var(--ok) 18%, var(--surface)); }
+.act-outcome.act-failed { border-color: color-mix(in srgb, var(--error) 55%, transparent); }
+.act-outcome.act-failed .act-icon { background: color-mix(in srgb, var(--error) 16%, var(--surface)); }
+.act-outcome .act-label { flex: 1; font-weight: 600; padding-top: 2px; }
+.act-entities { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 4px; font-weight: 400; color: var(--text); }
+.act-entity { display: inline-flex; align-items: center; gap: 6px; }
+.state-chip {
+  font-size: 0.75rem; line-height: 1; padding: 3px 7px; border-radius: 999px;
+  color: var(--muted); border: 1px solid var(--border-strong); font-variant-numeric: tabular-nums;
+}
+.state-chip.state-on { color: var(--text); border-color: transparent; background: color-mix(in srgb, var(--ok) 22%, transparent); }
+.act-reason { margin: 6px 0 0 40px; color: var(--muted); font-size: 0.85rem; }
+.act-foot { display: flex; align-items: baseline; gap: 16px; margin: 4px 0 0 40px; }
+.act-details { font-size: 0.8rem; color: var(--muted); margin-left: auto; text-align: right; }
+.act-details[open] { flex-basis: 100%; text-align: left; }
+.act-details > summary { width: fit-content; margin-left: auto; padding: 4px 0; }
+.act-details > summary:hover, .act-details[open] > summary { color: var(--text); }
+.act-link { font-size: 0.85rem; font-weight: 600; color: var(--text); text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 3px; padding: 4px 0; }
+.act-raw { margin-top: 6px; display: flex; flex-direction: column; gap: 8px; }
+.raw-call { color: var(--muted); font: 0.78rem/1.4 var(--mono); border-left: 1px solid var(--border); padding-left: 10px; }
+.raw-call-name { color: var(--text); }
+.raw-call pre { margin: 4px 0 0; white-space: pre-wrap; word-break: break-word; max-height: 40vh; overflow: auto; }
+.raw-call .raw-call-error { color: var(--error); }
+.act-spinner {
+  flex: none; width: 14px; height: 14px; margin-top: 3px; border-radius: 50%;
+  border: 2px solid var(--border-strong); border-top-color: var(--accent);
+  animation: spin 0.8s linear infinite;
+}
+.act-lookups .act-spinner { margin-top: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
 /* Approval card: the one thing awaiting a decision */
 .approval {
-  max-width: 480px;
+  max-width: 520px;
   background: var(--accent-tint); border: 1px solid var(--accent); border-radius: var(--r-card);
   -webkit-backdrop-filter: var(--glass);
   backdrop-filter: var(--glass);
@@ -256,19 +306,39 @@ button:disabled { opacity: 0.55; cursor: default; }
 }
 .approval-allowed, .approval-denied { background: transparent; border-color: var(--border); }
 .approval-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
-.approval-badge { font-size: 0.8rem; color: var(--muted); flex: none; }
-.approval-denied .approval-badge { color: var(--error); }
-.approval-summary { margin: 4px 0 8px; color: var(--muted); font-size: 0.85rem; }
+.approval-head h3 { margin: 0; font-size: 0.95rem; font-weight: 600; }
+.approval-badge { font-size: 0.8rem; font-weight: 600; flex: none; padding: 2px 8px; border-radius: 999px; }
+.approval-allowed .approval-badge { background: color-mix(in srgb, var(--ok) 22%, transparent); }
+.approval-denied .approval-badge { color: var(--muted); border: 1px solid var(--border-strong); }
+.approval-summary { margin: 4px 0 10px; color: var(--muted); font-size: 0.85rem; }
+/* When / If / Then: the change in words, above the code it comes from */
+.outline { margin: 0 0 10px; display: grid; gap: 8px; }
+.outline-row { display: grid; grid-template-columns: 3.2em 1fr; gap: 8px; align-items: baseline; }
+.outline dt { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.02em; color: var(--muted); }
+.outline dd { margin: 0; }
+.outline ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 2px; }
+.outline li { font-size: 0.9rem; overflow-wrap: anywhere; }
+.approval-code > summary { cursor: pointer; width: fit-content; font-size: 0.85rem; color: var(--muted); padding: 6px 0; }
+.approval-code > summary:hover, .approval-code[open] > summary { color: var(--text); }
+.approval-code[open] > summary { margin-bottom: 4px; }
 .approval-preview {
   margin: 0;
   background: var(--bg); border: 1px solid var(--border); border-radius: var(--r-md);
   padding: 8px 10px; font: 0.8rem/1.45 var(--mono);
-  overflow: auto; max-height: 45vh; white-space: pre;
+  /* Wrapped, so a phone scrolls one way only. */
+  overflow-y: auto; max-height: 45vh; white-space: pre-wrap; overflow-wrap: anywhere;
 }
-.diff-add { color: var(--ok); }
-.diff-del { color: var(--error); }
-.approval-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
-.approval-actions button { min-width: 104px; }
+/* Diff lines: the sign and a tint carry the meaning, the text stays full contrast in every theme. */
+.diff-add, .diff-del, .diff-same { display: block; margin: 0 -10px; padding: 0 10px; }
+.diff-add { background: color-mix(in srgb, var(--ok) 16%, transparent); }
+.diff-del { background: color-mix(in srgb, var(--error) 14%, transparent); }
+.diff-op { display: inline-block; width: 1.4em; font-weight: 700; }
+.diff-add .diff-op { color: var(--ok); }
+.diff-del .diff-op { color: var(--error); }
+.approval-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.approval-actions button { min-width: 112px; }
+.approval-note { margin: 8px 0 0; text-align: right; color: var(--muted); font-size: 0.8rem; }
+.approval-error { margin: 10px 0 0; padding: 8px 10px; border-radius: var(--r-md); background: color-mix(in srgb, var(--error) 10%, transparent); font-size: 0.875rem; }
 
 /* Composer */
 .composer {
@@ -286,7 +356,9 @@ button:disabled { opacity: 0.55; cursor: default; }
   font: 1rem/1.4 var(--font);
   max-height: 40vh;
 }
+.composer textarea { border-color: var(--border-strong); }
 .composer textarea::placeholder { color: var(--muted); }
+.stop-button { display: inline-flex; align-items: center; gap: 6px; padding: 0 14px; font-weight: 600; }
 .composer textarea:focus { outline: none; border-color: var(--accent); }
 .phonebar { display: flex; align-items: center; gap: 8px; padding: 6px 12px 0 16px; }
 .phonebar-title { flex: 1; min-width: 0; margin: 0; color: var(--muted); font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -294,14 +366,17 @@ button:disabled { opacity: 0.55; cursor: default; }
 .dot-badge { position: absolute; top: 7px; right: 7px; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 2px var(--bg); }
 
 @media (max-width: 767px) {
-  .messages { padding: 12px; }
-  .composer { padding-left: 12px; padding-right: 12px; }
+  .messages { padding: 12px 16px; }
+  .composer { padding-left: 16px; padding-right: 16px; }
   .msg-user p { max-width: 90%; }
-  .approval { max-width: 100%; }
+  .approval, .act-outcome { max-width: 100%; }
+  .approval-actions button { flex: 1; min-width: 0; }
+  .approval-note { text-align: center; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .studs i { animation: none; opacity: 0.7; }
+  .act-spinner { animation-duration: 2.4s; }
   .sheet, .scrim { animation: none; transition: none; }
   .archived-toggle::after { transition: none; }
 }

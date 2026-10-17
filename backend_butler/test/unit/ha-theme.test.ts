@@ -31,6 +31,12 @@ describe("themeVars", () => {
     });
   });
 
+  it("takes HA's error and success colours, so status reads in light themes too", () => {
+    const v = themeVars((n) => ({ "--primary-background-color": "#fafafa", "--error-color": "#db4437", "--success-color": "#43a047" })[n] ?? "")!;
+    expect(v["--error"]).toBe("#db4437");
+    expect(v["--ok"]).toBe("#43a047");
+  });
+
   it("uses white text on a dark accent and a light scheme on a light background", () => {
     const v = themeVars((n) => ({ "--primary-background-color": "#fafafa", "--primary-color": "#03a9f4" })[n] ?? "")!;
     expect(v["color-scheme"]).toBe("light");

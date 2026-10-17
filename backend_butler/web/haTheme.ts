@@ -9,6 +9,8 @@ const MAP: [string, string[]][] = [
   ["--muted", ["--secondary-text-color"]],
   ["--border", ["--divider-color"]],
   ["--accent", ["--primary-color"]],
+  ["--error", ["--error-color"]],
+  ["--ok", ["--success-color"]],
   ["--r-card", ["--ha-card-border-radius"]],
   ["--glass", ["--ha-card-backdrop-filter"]],
 ];

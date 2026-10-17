@@ -6,6 +6,7 @@ import { IntentPrompt, isPromptKind } from "./IntentPrompt";
 import { MicButton, type MicHandle } from "./MicButton";
 import { useSlashMenu } from "./slash";
 import { SlashMenu } from "./SlashMenu";
+import { StopIcon } from "./icons";
 
 interface Props {
   value: string;
@@ -14,13 +15,15 @@ interface Props {
   busy: boolean;
   /** Returns false when nothing was sent (empty, or busy), so the photos stay in the tray. */
   onSend: (text: string, images: PendingImage[]) => boolean;
+  /** Stop the turn in progress (the Send button becomes Stop while busy; Esc in the box does the same). */
+  onStop?: () => void;
   /** From the quick card or widget. field focuses the box; camera/photo/mic/voice show a one-tap prompt; say/draft bring words. */
   intent?: Intent | null;
   onIntentDone?: () => void;
 }
 
 /** The message box with its photo tray (above) and `/` skill menu (popup). */
-export function Composer({ value, onChange, inputRef, busy, onSend, intent, onIntentDone }: Props) {
+export function Composer({ value, onChange, inputRef, busy, onSend, onStop, intent, onIntentDone }: Props) {
   const attach = useAttachments();
   const pickerRef = useRef<HTMLInputElement>(null);
   const cameraRef = useRef<HTMLInputElement>(null);
@@ -108,12 +111,17 @@ export function Composer({ value, onChange, inputRef, busy, onSend, intent, onIn
           value={value}
           rows={1}
           aria-label="Message"
-          placeholder="Ask Butler…"
+          placeholder="Ask Butler, or / for skills"
           {...slash.inputProps}
           onFocus={done}
           onChange={(e) => onChange(e.target.value)}
           onKeyDown={(e) => {
             if (slash.onKeyDown(e)) return;
+            if (e.key === "Escape" && busy && onStop) {
+              e.preventDefault();
+              onStop();
+              return;
+            }
             // Enter sends on desktop; on touch keyboards Return inserts a newline and the button sends.
             if (e.key === "Enter" && !e.shiftKey && !window.matchMedia("(pointer: coarse)").matches) {
               e.preventDefault();
@@ -121,9 +129,16 @@ export function Composer({ value, onChange, inputRef, busy, onSend, intent, onIn
             }
           }}
         />
-        <button type="submit" className="primary" disabled={busy}>
-          Send
-        </button>
+        {busy && onStop ? (
+          <button type="button" className="ghost stop-button" onClick={onStop} aria-keyshortcuts="Escape">
+            <StopIcon />
+            Stop
+          </button>
+        ) : (
+          <button type="submit" className="primary" disabled={busy}>
+            Send
+          </button>
+        )}
       </div>
     </form>
   );

@@ -16,7 +16,7 @@
   min-height: 44px; padding: 6px 12px; border-radius: var(--r-md);
   cursor: pointer; min-width: 0;
 }
-.slash-opt[aria-selected="true"] { background: var(--accent-tint); }
+.slash-opt[aria-selected="true"] { background: var(--hover); }
 .slash-name { color: var(--text); font-weight: 600; }
 .slash-desc { color: var(--muted); font-size: 0.85em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (prefers-reduced-motion: no-preference) {

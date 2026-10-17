@@ -4,6 +4,7 @@ import type { ApprovalGate, ApprovalRequest, GatedTool } from "../approvals.js";
 import { lineDiff, toYaml } from "../yaml.js";
 import type { ConfigKind, HaClient } from "./client.js";
 import type { EntityCache } from "./entities.js";
+import { outline } from "./outline.js";
 import { toolId } from "./tool-names.js";
 import { errorMessage, fail, guarded, text } from "./tools-read.js";
 
@@ -124,17 +125,21 @@ export function configTools(kind: ConfigKind, ha: HaClient, cache: EntityCache, 
       if (problem) return { error: problem };
       const existing = id ? await ha.getConfig(kind, id) : null;
       const after = toYaml(config);
+      const byId = new Map((await cache.get()).map((e) => [e.entity_id, e.name]));
+      const read = outline(kind, config, (eid) => byId.get(eid) || eid);
       if (existing) {
         return {
           title: `Edit ${label} “${config.alias}”`,
           summary: `Updates ${label} ${id} and reloads ${label}s.`,
           preview: { kind: "diff", lines: lineDiff(toYaml(withoutId(existing)), after) },
+          outline: read,
         };
       }
       return {
         title: `Create ${label} “${config.alias}”`,
         summary: `Adds a new ${label} and reloads ${label}s.`,
         preview: { kind: "yaml", text: after },
+        outline: read,
       };
     },
   };

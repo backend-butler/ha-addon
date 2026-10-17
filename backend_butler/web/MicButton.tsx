@@ -71,9 +71,12 @@ export function MicButton({ disabled, onText, onAutoText, handle }: Props) {
         {recording ? <span className="mic-time">{clock(voice.seconds)}</span> : <MicIcon />}
       </button>
       {note && (
-        <p className="composer-note" role="status" onClick={() => (setHttpNote(false), voice.dismiss())}>
-          {note}
-        </p>
+        <div className="composer-note" role="status">
+          <p>{note}</p>
+          <button type="button" className="link-button" onClick={() => (setHttpNote(false), voice.dismiss())}>
+            Dismiss
+          </button>
+        </div>
       )}
       {recording && (
         <span className="visually-hidden" role="status">
